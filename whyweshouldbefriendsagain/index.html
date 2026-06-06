@@ -222,7 +222,7 @@
     <div class="container">
       <p class="label">A formal proposal · 2026</p>
       <h1 class="fade-in">Why We Should Be Friends Again</h1>
-      <p class="hero-sub fade-in">A thoughtful, well-researched, and completely unbiased case — prepared by Leo Boisvert, for [Name].</p>
+      <p class="hero-sub fade-in">A thoughtful, well-researched, and completely unbiased case — prepared by Leo Boisvert, for <span data-name>[Name]</span>.</p>
       <div class="hero-meta fade-in">
         <div class="hero-meta-item">
           <p class="label">Prepared by</p>
@@ -230,7 +230,7 @@
         </div>
         <div class="hero-meta-item">
           <p class="label">Prepared for</p>
-          <span>[Name]</span>
+          <span data-name>[Name]</span>
         </div>
         <div class="hero-meta-item">
           <p class="label">Status</p>
@@ -395,6 +395,15 @@
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Name replacement from query string
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    if (name) {
+      document.querySelectorAll('[data-name]').forEach(el => {
+        el.textContent = name;
+      });
+    }
 
     // FAQ accordion
     document.querySelectorAll('.faq-btn').forEach(btn => {
