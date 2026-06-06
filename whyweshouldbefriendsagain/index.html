@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leo Boisvert — A Proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F4EF;
+      --ink: #1A1A18;
+      --muted: #7A7A72;
+      --accent: #C0392B;
+      --rule: #E0DDD7;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --max: 680px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.2; }
+    h1 { font-size: clamp(2.6rem, 7vw, 4rem); }
+    h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 32px; }
+    h3 { font-size: 1.15rem; margin-bottom: 8px; }
+
+    p { margin-bottom: 18px; }
+    p:last-child { margin-bottom: 0; }
+
+    .label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* HERO */
+    .hero { padding: 120px 0 80px; border-bottom: 1px solid var(--rule); }
+    .hero .label { margin-bottom: 24px; }
+    .hero h1 { margin-bottom: 28px; max-width: 580px; }
+    .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 480px; margin-bottom: 0; }
+
+    .hero-meta {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item .label { margin-bottom: 4px; }
+    .hero-meta-item span { font-size: 0.9rem; color: var(--muted); }
+
+    /* INTRO */
+    .intro-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+      line-height: 1.45;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 32px;
+      padding-left: 24px;
+      border-left: 2px solid var(--ink);
+    }
+
+    /* WHY NOW */
+    .why-now-grid { display: grid; gap: 40px; margin-top: 8px; }
+    .why-now-item { display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; }
+    .why-now-number {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--rule);
+      line-height: 1;
+      padding-top: 4px;
+      user-select: none;
+    }
+
+    /* FAQ accordion */
+    .faq-item { border-bottom: 1px solid var(--rule); }
+    .faq-item:first-child { border-top: 1px solid var(--rule); }
+
+    .faq-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .faq-btn:hover .faq-q { opacity: 0.7; }
+
+    .faq-q {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin: 0;
+      transition: opacity 0.2s;
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      position: relative;
+    }
+    .faq-icon::before,
+    .faq-icon::after {
+      content: '';
+      position: absolute;
+      background: var(--muted);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .faq-icon::before { width: 12px; height: 1.5px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .faq-icon::after  { width: 1.5px; height: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+    .faq-item.open .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+
+    .faq-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-body { max-height: 300px; }
+
+    .faq-a {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+      padding-bottom: 24px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px; }
+    @media (max-width: 520px) { .testimonials-grid { grid-template-columns: 1fr; } }
+    .testimonial { background: white; border: 1px solid var(--rule); border-radius: 4px; padding: 24px; }
+    .testimonial-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+    .testimonial-attr { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; }
+
+    /* CTA */
+    .cta-section { padding: 100px 0; text-align: center; }
+    .cta-section h2 { margin-bottom: 16px; }
+    .cta-sub { color: var(--muted); margin-bottom: 40px; font-size: 0.95rem; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--ink);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { background: #333; transform: translateY(-1px); }
+
+    /* FOOTER */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-note { font-size: 0.8rem; color: var(--muted); }
+
+    /* ANIMATIONS */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .fade-in.visible { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="label">A formal proposal · 2026</p>
+      <h1 class="fade-in">Why We Should Be Friends Again</h1>
+      <p class="hero-sub fade-in">A thoughtful, well-researched, and completely unbiased case — prepared by Leo Boisvert, for [Name].</p>
+      <div class="hero-meta fade-in">
+        <div class="hero-meta-item">
+          <p class="label">Prepared by</p>
+          <span>Leo Boisvert</span>
+        </div>
+        <div class="hero-meta-item">
+          <p class="label">Prepared for</p>
+          <span>[Name]</span>
+        </div>
+        <div class="hero-meta-item">
+          <p class="label">Status</p>
+          <span>Hopefully approved</span>
+        </div>
+        <div class="hero-meta-item">
+          <p class="label">Estimated read time</p>
+          <span>3 minutes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPENING STATEMENT -->
+  <section>
+    <div class="container">
+      <p class="label">Opening statement</p>
+      <blockquote class="intro-quote fade-in">
+        "Alright, I know this isn't exactly a normal way to reconnect, but it is very much a me way to do it…"
+      </blockquote>
+      <p class="fade-in">This page exists because I owe you more than just a text asking you "pretty please be friends??" — and I know just how well those texts work out. I'd also like to avoid a long paragraph or something (wouldn't know anything about that…)</p>
+      <p class="fade-in">I'm not expecting things to go back to exactly how they were. I just want some part of that to return :/</p>
+    </div>
+  </section>
+
+  <!-- WHY IT TOOK SO LONG -->
+  <section>
+    <div class="container">
+      <p class="label">Why it took so long</p>
+      <h2 class="fade-in">An honest account</h2>
+      <div class="why-now-grid">
+
+        <div class="why-now-item fade-in">
+          <span class="why-now-number">01</span>
+          <div>
+            <h3>I thought we ended off on too bad of terms to rekindle</h3>
+            <p>We were really close with each other, and when relationships like that end, it's pretty brutal. This one was no exception… safe to say, I was scared.</p>
+          </div>
+        </div>
+
+        <div class="why-now-item fade-in">
+          <span class="why-now-number">02</span>
+          <div>
+            <h3>I kept pushing it off</h3>
+            <p>I know, I know, that's not exactly the most valid thing you could ever say, but it's true. I reallllllly procrastinate stuff and sadly this joined into it.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container">
+      <p class="label">Frequently asked questions</p>
+      <h2 class="fade-in">Anticipated concerns, addressed</h2>
+      <div class="faq-list">
+
+        <div class="faq-item fade-in">
+          <button class="faq-btn" aria-expanded="false">
+            <p class="faq-q">Why should I give you another chance?</p>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-body">
+            <p class="faq-a">Statistically, you've forgiven worse. Also I have improved a lot as a person, and I hope the differences that ended this relationship can be looked past.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-btn" aria-expanded="false">
+            <p class="faq-q">What am I committing to if I respond?</p>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-body">
+            <p class="faq-a">Nothing, legally. One conversation. No terms, no conditions, no fine print. Well… there's a little, teeny tiny, itty bitty fine print, but it just says "Leo is happy you texted back."</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-btn" aria-expanded="false">
+            <p class="faq-q">Genuinely who are you to put in this much effort?</p>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-body">
+            <p class="faq-a">Not sure — just the last few times I've tried over text it didn't exactly go well, so I thought I'd give something else a try.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-btn" aria-expanded="false">
+            <p class="faq-q">Is this weird?</p>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-body">
+            <p class="faq-a">A little. But "weird" is a pretty good word to describe me, I guess.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="container">
+      <p class="label">Third-party endorsements</p>
+      <h2 class="fade-in">What others are saying</h2>
+      <div class="testimonials-grid">
+
+        <div class="testimonial fade-in">
+          <p class="testimonial-text">"Leo? Great guy. Showed up on time once. Would recommend."</p>
+          <p class="testimonial-attr">— Alex D., Mutual acquaintance</p>
+        </div>
+
+        <div class="testimonial fade-in">
+          <p class="testimonial-text">"I don't know what happened between them but I think they should just talk it out."</p>
+          <p class="testimonial-attr">— Someone's mom, Probably</p>
+        </div>
+
+        <div class="testimonial fade-in">
+          <p class="testimonial-text">"That guy? Man I'd become friends with him if I saw that website :D"</p>
+          <p class="testimonial-attr">— Timmy Jim, Definitely a real person</p>
+        </div>
+
+        <div class="testimonial fade-in">
+          <p class="testimonial-text">"Honestly I stopped reading after the first section but the formatting was very clean."</p>
+          <p class="testimonial-attr">— Anonymous reviewer</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="fade-in">So. What do you say?</h2>
+      <p class="cta-sub fade-in">No pressure. The door's open.</p>
+      <a href="sms:+14243705078" class="cta-btn fade-in">Reach out</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer">
+        <p class="footer-note">© 2026 Leo Boisvert. All rights reserved. No friendships were harmed in the making of this page.</p>
+        <p class="footer-note">leoboisvert.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+        });
+        // Open clicked one if it was closed
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
